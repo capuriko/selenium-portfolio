@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>TODO | Mini TODO</title>
+</head>
+<body>
+<h1>TODOリスト</h1>
+<p id="welcome"></p>
+<label>やること <input type="text" id="todo-input" placeholder="やること（1〜30文字）"></label>
+<button id="add-button">追加</button>
+<p id="todo-error" style="color:red"></p>
+<ul id="todo-list"></ul>
+<p>件数: <span id="todo-count">0</span></p>
+
+<script>
+    const params = new URLSearchParams(location.search);
+    document.getElementById('welcome').textContent =
+        'ようこそ、' + (params.get('user') || 'ゲスト') + 'さん';
+
+    const list = document.getElementById('todo-list');
+    const err = document.getElementById('todo-error');
+
+    function updateCount() {
+        document.getElementById('todo-count').textContent = list.children.length;
+    }
+
+    document.getElementById('add-button').addEventListener('click', function () {
+        const input = document.getElementById('todo-input');
+        const text = input.value.trim();
+        err.textContent = '';
+        if (text.length < 1 || text.length > 30) {
+            err.textContent = '1〜30文字で入力してください';
+            return;
+        }
+        input.value = '';
+        // わざと1秒遅らせて追加する（サーバー通信の代わり。待機の練習用）
+        setTimeout(function () {
+            const li = document.createElement('li');
+            li.className = 'todo-item';
+            const span = document.createElement('span');
+            span.className = 'todo-text';
+            span.textContent = text;
+            const del = document.createElement('button');
+            del.className = 'delete-button';
+            del.textContent = '削除';
+            del.addEventListener('click', function () { li.remove(); updateCount(); });
+            li.append(span, del);
+            list.appendChild(li);
+            updateCount();
+        }, 1000);
+    });
+</script>
+</body>
+</html>

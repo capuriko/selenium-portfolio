@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>ログイン | Mini TODO</title>
+</head>
+<body>
+<h1>Mini TODO ログイン</h1>
+<form id="login-form">
+    <label>ユーザーID <input type="text" id="username"></label><br>
+    <label>パスワード <input type="password" id="password"></label><br>
+    <button type="submit" id="login-button">ログイン</button>
+</form>
+<p id="error-message" style="color:red"></p>
+
+<script>
+    document.getElementById('login-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const user = document.getElementById('username').value;
+        const pass = document.getElementById('password').value;
+        if (user === 'testuser' && pass === 'password123') {
+            location.href = 'todo.html?user=' + encodeURIComponent(user);
+        } else {
+            document.getElementById('error-message').textContent =
+                'ユーザーIDまたはパスワードが違います';
+        }
+    });
+</script>
+</body>
+</html>
